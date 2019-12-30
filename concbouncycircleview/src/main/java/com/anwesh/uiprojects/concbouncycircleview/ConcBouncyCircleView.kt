@@ -182,4 +182,26 @@ class ConcBouncyCircleView(ctx : Context) : View(ctx) {
             curr.startUpdating(cb)
         }
     }
+
+    data class Renderer(var view : ConcBouncyCircleView) {
+
+        private val animator : Animator = Animator(view)
+        private val cbc : ConcBouncyCircle = ConcBouncyCircle(0)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(backColor)
+            cbc.draw(canvas, paint)
+            animator.animate {
+                cbc.update {
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            cbc.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
